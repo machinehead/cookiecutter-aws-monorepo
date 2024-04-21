@@ -1,3 +1,6 @@
 {
-  "project_name": "python_project_name"
+  "project_name": "python_project_name",
+  "project_dir": "{{ cookiecutter.project_name.lower().replace(' ', '-') }}",
+  "project_slug": "{{ cookiecutter.project_name.lower().replace(' ', '_').replace('-', '_') }}",
+  "author": "Anonymous"
 }
