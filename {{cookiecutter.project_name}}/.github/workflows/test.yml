@@ -31,9 +31,9 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ~/.cache/pypoetry/virtualenvs
-          key: venv-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('**/poetry.lock') }}
+          key: {% raw %}venv-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('**/poetry.lock') }}{% endraw %}
           restore-keys: |
-            venv-${{ steps.setup-python.outputs.python-version }}-
+            {% raw %}venv-${{ steps.setup-python.outputs.python-version }}-{% endraw %}
             venv-
 
       - name: Install dependencies
@@ -47,11 +47,11 @@ jobs:
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
         with:
-          token: ${{ secrets.CODECOV_TOKEN }}
+          token: {% raw %}${{ secrets.CODECOV_TOKEN }}{% endraw %}
           fail_ci_if_error: true
           verbose: true
         env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+          CODECOV_TOKEN: {% raw %}${{ secrets.CODECOV_TOKEN }}{% endraw %}
 #
 #      - name: Dump docker logs on failure
 #        if: failure()
