@@ -1,0 +1,43 @@
+[tool.poetry]
+name = "{{ cookiecutter.project_slug }}"
+version = "0.1.0"
+description = ""
+authors = ["{{ cookiecutter.author }}"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+
+[tool.poetry.group.dev.dependencies]
+pre-commit = "*"
+commitizen = "*"
+# nox = "^2023.4.22"
+mypy = "*"
+pytest = "*"
+pytest-cov = "*"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+
+[tool.commitizen]
+name = "cz_conventional_commits"
+tag_format = "v$version"
+version_type = "pep440"
+version_provider = "poetry"
+update_changelog_on_bump = true
+major_version_zero = true
+
+[tool.pytest.ini_options]
+addopts = "--cov=. --cov-report html --cov-report xml --cov-config=.coveragerc"
+testpaths = [
+    "tests",
+]
+#markers = [
+#    "branch_name",
+#]

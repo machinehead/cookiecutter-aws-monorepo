@@ -1,0 +1,58 @@
+name: Test
+on: [push, workflow_dispatch]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+#    permissions: write-all
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python 3.11
+        id: setup-python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.11
+
+      - name: Load cached Poetry installation
+        id: cached-poetry
+        uses: actions/cache@v3
+        with:
+          path: ~/.local  # the path depends on the OS
+          key: poetry-0-py311  # increment to reset cache
+
+      - name: Install Poetry if not cached
+        if: steps.cached-poetry.outputs.cache-hit != 'true'
+        uses: snok/install-poetry@v1
+        with:
+          virtualenvs-in-project: false
+
+      - name: Load cached venvs
+        id: cached-venv
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pypoetry/virtualenvs
+          key: venv-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('**/poetry.lock') }}
+          restore-keys: |
+            venv-${{ steps.setup-python.outputs.python-version }}-
+            venv-
+
+      - name: Install dependencies
+        # Turns out that the venv in the cache might be broken, so attempt installing deps anyway
+        # if: steps.cached-venv.outputs.cache-hit != 'true'
+        run: poetry install --sync --no-root
+
+      - name: Run tests
+        run: poetry run pytest
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: true
+          verbose: true
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+#
+#      - name: Dump docker logs on failure
+#        if: failure()
+#        uses: jwalton/gh-docker-logs@v2
