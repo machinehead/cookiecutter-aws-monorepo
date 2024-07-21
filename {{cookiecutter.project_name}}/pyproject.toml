@@ -33,6 +33,9 @@ version_provider = "poetry"
 update_changelog_on_bump = true
 major_version_zero = true
 
+[tool.vulture]
+min_confidence = 61
+
 [tool.pytest.ini_options]
 addopts = "--cov=. --cov-report html --cov-report xml --cov-config=.coveragerc"
 testpaths = [
