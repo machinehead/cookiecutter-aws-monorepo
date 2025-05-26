@@ -1,0 +1,15 @@
+.venv
+.ipynb_checkpoints
+.mypy_cache
+cdk.out
+**/__pycache__
+/docker/
+.coverage
+.coverage.*
+coverage*.xml
+workspace.xml
+.env
+scratch
+**/allure-results
+**/allure-reports
+.aider*
